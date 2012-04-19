@@ -1,2 +1,8 @@
 from django.contrib import admin
-from shelf.models import Album, Role, Performance, Work, Venue, Instrument
+from music.models import Album, Role, Performance, Work, Venue, Instrument
+
+class AlbumAdmin(admin.ModelAdmin):
+    pass
+
+admin.site.register(Album, AlbumAdmin)
+
