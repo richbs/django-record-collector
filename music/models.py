@@ -37,7 +37,8 @@ class Artist(models.Model):
 
 class Work(models.Model):
     """
-    Either a classical opus or a track on an album
+    Either a classical opus or a show tune or a standard
+    or a track on an album
     """
     title = models.CharField(blank=False, max_length=255)
     slug = models.SlugField(max_length=255, db_index=True)
