@@ -102,4 +102,3 @@ class Album(models.Model):
     performances = models.ManyToManyField(Performance)
     release_date = models.DateField()
     year = models.IntegerField(blank=True, null=True)
-    
