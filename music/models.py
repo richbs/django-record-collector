@@ -17,7 +17,6 @@ class Venue(models.Model):
     def __unicode__(self):
         return u"%s" % (self.name)
 
-
 class Artist(models.Model):
     """
     Class for composers, artists, critics
@@ -43,35 +42,21 @@ class Work(models.Model):
     title = models.CharField(blank=False, max_length=255)
     slug = models.SlugField(max_length=255, db_index=True)
     opus_number = models.CharField(blank=True, max_length=10)
-    composers = models.ManyToManyField(Artist, through="Role")
+    composers = models.ManyToManyField(Artist, through="Performing")
     year_composed = models.IntegerField(blank=True, null=True)
     class Admin:
         list_display = ('',)
         search_fields = ('',)
 
     def __unicode__(self):
-        return u"Track"
+        return u"Work"
 
+class Track(Work):
     
-class Performance(models.Model):
-    """
-    A performance of a work given at a particular date and time
-    Could be a recording date
-    """
-    year = models.IntegerField(blank=True)
-    date = models.DateField()
-    venue = models.ForeignKey(Venue)
-    work = models.ForeignKey(Work)
-    performers = models.ManyToManyField(Artist, through="Role")
-
-    class Admin:
-        list_display = ('',)
-        search_fields = ('',)
-
-    def __unicode__(self):
-        return u"%s %d" % (self.work, self.year)
-
-
+    number = models.IntegerField(blank=True, null=False, db_index=True)
+    artist = models.ManyToManyField(Artist, through="Playing")
+    
+    
 class Instrument(models.Model):
     """(Instrument description)"""
     
@@ -86,19 +71,71 @@ class Instrument(models.Model):
         return u"Instrument"
 
 
-class Role(models.Model):
-    artist = models.ForeignKey(Artist)
+class Performance(models.Model):
+    """
+    A performance of a work given at a particular date and time
+    Could be a recording date
+    """
+    year = models.IntegerField(blank=True)
+    date = models.DateField()
+    venue = models.ForeignKey(Venue)
     work = models.ForeignKey(Work)
-    performance = models.ForeignKey(Performance)
+    performers = models.ManyToManyField(Artist, through="Performing")
+
+    class Admin:
+        list_display = ('',)
+        search_fields = ('',)
+
+    def __unicode__(self):
+        return u"%s %d" % (self.work, self.year)
+
+
+class Role(models.Model):
+    
+    class Meta:
+        abstract = True    
+    
+    artist = models.ForeignKey(Artist)
     instruments = models.ManyToManyField(Instrument)
     composer = models.BooleanField(default=False)
-    performer = models.BooleanField(default=True)
+
+
+class Playing(Role):
+    track = models.ForeignKey(Track)
+
+    
+class Performing(Role):
+    
+    work = models.ForeignKey(Work)
+    performance = models.ForeignKey(Performance, null=True)
+    
+
+
+class Label(models.Model):
+    name = models.CharField(max_length=255)
+    slug = models.SlugField(max_length=255, db_index=True)
 
 
 class Album(models.Model):
 
     name = models.CharField(max_length=255)
     slug = models.SlugField(max_length=255, db_index=True)
-    performances = models.ManyToManyField(Performance)
     release_date = models.DateField()
     year = models.IntegerField(blank=True, null=True)
+    label = models.ForeignKey(Label, blank=True, null=True)
+    
+    def __unicode__(self):
+        return u"%s (%d)" % (self.name, self.year)
+        
+class ClassicalAlbum(Album):
+
+    performances = models.ManyToManyField(Performance)
+
+
+class PopularAlbum(Album):
+
+    tracks = models.ManyToManyField(Track)
+    artists = models.ManyToManyField(Artist, through="AlbumArtist")
+
+class AlbumArtist(Role):
+    album = models.ForeignKey(PopularAlbum)

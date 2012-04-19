@@ -2,7 +2,8 @@ from django.contrib import admin
 from music.models import Album, Role, Performance, Work, Venue, Instrument
 
 class AlbumAdmin(admin.ModelAdmin):
-    pass
+
+    prepopulated_fields = {"slug": ("name",)}
 
 admin.site.register(Album, AlbumAdmin)
 
