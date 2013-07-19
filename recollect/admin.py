@@ -1,5 +1,5 @@
 from django.contrib import admin
-from music.models import Album, Role, Performance, Work, Venue, Instrument
+from recollect.models import Album, Role, Performance, Work, Venue, Instrument
 
 class AlbumAdmin(admin.ModelAdmin):
 
