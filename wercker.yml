@@ -9,5 +9,5 @@ build:
     # django test time
     - script:
       name: django test
-      code: |
+      code: |-
         python manage.py test recollect
