@@ -3,11 +3,8 @@ box: wercker/python
 build:
   # The steps that will be executed on build
   steps:
-    # A step that executes `pip install` command
-    - pip-install
-    
     # django test time
     - script:
       name: django test
-      code: |-
+      code: |
         python manage.py test recollect
