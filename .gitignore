@@ -1,8 +1,5 @@
 /.*project
 /*db
 /*/*db
-/manage.py
 /settings_*.py
-/__init__.py
-/urls.py
 /drcenv
