@@ -5,8 +5,8 @@ build:
   steps:
     # A step that executes `pip install` command
     - pip-install
-      - script:
-        name: test
-        code: |
-          python manage.py test recollect -v2
+    - script:
+      name: test
+      code: |
+        python manage.py test recollect -v2
 
