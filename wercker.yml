@@ -3,8 +3,13 @@ box: wercker/python
 build:
   # The steps that will be executed on build
   steps:
-    # django test time
+    # A step that executes `pip install` command
+    - pip-install
+
+    # A custom script step, name value is used in the UI
+    # and the code value contains the command that get executed
     - script:
-      name: django test
-      code: |
-        python manage.py test recollect
+        name: echo python information
+        code: |
+          echo "python version $(python --version) running"
+          echo "pip version $(pip --version) running"
