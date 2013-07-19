@@ -1,0 +1,12 @@
+box: wercker/python
+# Build definition
+build:
+  # The steps that will be executed on build
+  steps:
+  	# A step that executes `pip install` command
+	- pip-install
+    - script:
+        name: test
+        code: |
+          python manage.py test recollect -v2
+          
