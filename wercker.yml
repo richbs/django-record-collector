@@ -11,4 +11,3 @@ build:
       name: django test
       code: |
         python manage.py test recollect
-
