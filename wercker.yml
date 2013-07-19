@@ -6,8 +6,4 @@ build:
     # A step that executes `pip install` command
     - pip-install
     
-    # django test time
-    - script:
-      name: django test
-      code: |
-        python manage.py test recollect
+
