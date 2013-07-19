@@ -9,4 +9,4 @@ build:
         name: test
         code: |
           python manage.py test recollect -v2
-          
+
