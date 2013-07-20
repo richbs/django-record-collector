@@ -15,7 +15,7 @@ class RecollectTest(TestCase):
         response = self.client.get('/')
         self.assertContains(response, 'world', 1, 200)
 
-    def test_albums(self):
-
-        response = self.client.get('/albums')
-        self.assertContains(response, "Harvest", 1, 200)
+#     def test_albums(self):
+#
+#         response = self.client.get('/albums')
+#         self.assertContains(response, "Harvest", 1, 200)

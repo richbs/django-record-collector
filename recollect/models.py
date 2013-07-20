@@ -124,7 +124,7 @@ class Album(models.Model):
 
     name = models.CharField(max_length=255)
     slug = models.SlugField(max_length=255, db_index=True)
-    release_date = models.DateField()
+    release_date = models.DateField(null=True)
     year = models.IntegerField(blank=True, null=True)
     label = models.ForeignKey(Label, blank=True, null=True)
 
