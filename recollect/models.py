@@ -1,5 +1,6 @@
 from django.db import models
 
+
 class Venue(models.Model):
     """
     A recording venue or live gig
@@ -9,13 +10,14 @@ class Venue(models.Model):
     slug = models.SlugField(max_length=255, db_index=True)
     latitude = models.FloatField()
     longitude = models.FloatField()
-    
+
     class Admin:
         list_display = ('',)
         search_fields = ('',)
 
     def __unicode__(self):
         return u"%s" % (self.name)
+
 
 class Artist(models.Model):
     """
@@ -26,13 +28,14 @@ class Artist(models.Model):
     slug = models.SlugField(max_length=255, db_index=True)
     surname = models.CharField(blank=True, max_length=255)
     given_name = models.CharField(blank=True, max_length=255)
-        
+
     class Admin:
         list_display = ('',)
         search_fields = ('',)
 
     def __unicode__(self):
-        return u"%s" % (name)
+        return u"%s" % (self.name)
+
 
 class Work(models.Model):
     """
@@ -44,6 +47,7 @@ class Work(models.Model):
     opus_number = models.CharField(blank=True, max_length=10)
     composers = models.ManyToManyField(Artist, through="Performing")
     year_composed = models.IntegerField(blank=True, null=True)
+
     class Admin:
         list_display = ('',)
         search_fields = ('',)
@@ -51,15 +55,16 @@ class Work(models.Model):
     def __unicode__(self):
         return u"Work"
 
+
 class Track(Work):
-    
+
     number = models.IntegerField(blank=True, null=False, db_index=True)
     artist = models.ManyToManyField(Artist, through="Playing")
-    
-    
+
+
 class Instrument(models.Model):
     """(Instrument description)"""
-    
+
     name = models.CharField(blank=True, max_length=255)
     slug = models.SlugField(max_length=255, db_index=True)
 
@@ -91,10 +96,10 @@ class Performance(models.Model):
 
 
 class Role(models.Model):
-    
+
     class Meta:
-        abstract = True    
-    
+        abstract = True
+
     artist = models.ForeignKey(Artist)
     instruments = models.ManyToManyField(Instrument)
     composer = models.BooleanField(default=False)
@@ -103,12 +108,11 @@ class Role(models.Model):
 class Playing(Role):
     track = models.ForeignKey(Track)
 
-    
+
 class Performing(Role):
-    
+
     work = models.ForeignKey(Work)
     performance = models.ForeignKey(Performance, null=True)
-    
 
 
 class Label(models.Model):
@@ -123,10 +127,11 @@ class Album(models.Model):
     release_date = models.DateField()
     year = models.IntegerField(blank=True, null=True)
     label = models.ForeignKey(Label, blank=True, null=True)
-    
+
     def __unicode__(self):
         return u"%s (%d)" % (self.name, self.year)
-        
+
+
 class ClassicalAlbum(Album):
 
     performances = models.ManyToManyField(Performance)
@@ -136,6 +141,7 @@ class PopularAlbum(Album):
 
     tracks = models.ManyToManyField(Track)
     artists = models.ManyToManyField(Artist, through="AlbumArtist")
+
 
 class AlbumArtist(Role):
     album = models.ForeignKey(PopularAlbum)
