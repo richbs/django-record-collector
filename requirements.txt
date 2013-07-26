@@ -1,4 +1,4 @@
 Django==1.5.1
 django-grappelli==2.4.5
 gunicorn==17.5
-coveralls
+python-coveralls
