@@ -53,7 +53,7 @@ class Work(models.Model):
         search_fields = ('',)
 
     def __unicode__(self):
-        return u"Work"
+        return u"%s" % (self.title)
 
 
 class Track(Work):
@@ -73,7 +73,7 @@ class Instrument(models.Model):
         search_fields = ('',)
 
     def __unicode__(self):
-        return u"Instrument"
+        return u"%s" (self.name)
 
 
 class Performance(models.Model):

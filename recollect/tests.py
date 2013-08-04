@@ -13,7 +13,8 @@ class RecollectTest(TestCase):
     def test_home(self):
 
         response = self.client.get('/')
-        self.assertContains(response, 'world', 1, 200)
+        self.assertContains(response, 'Harvest', 1, 200)
+        self.assertContains(response, '<li', 1, 200)
 
 #     def test_albums(self):
 #
