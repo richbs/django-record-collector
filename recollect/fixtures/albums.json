@@ -1,0 +1,49 @@
+[
+{
+    "pk": 1, 
+    "model": "recollect.album", 
+    "fields": {
+        "label": null, 
+        "release_date": null, 
+        "year": 1990, 
+        "name": "Harvest Moons", 
+        "slug": ""
+    }
+},
+{
+    "pk": 2, 
+    "model": "recollect.album", 
+    "fields": {
+        "label": null, 
+        "release_date": null, 
+        "year": 1976, 
+        "name": "Mahler: Symphony No. 2 \"Resurrection\"", 
+        "slug": ""
+    }
+},
+{
+    "pk": 3, 
+    "model": "recollect.album", 
+    "fields": {
+        "label": null, 
+        "release_date": null, 
+        "year": 1965, 
+        "name": "Help!", 
+        "slug": ""
+    }
+},
+{
+    "pk": 2, 
+    "model": "recollect.classicalalbum", 
+    "fields": {
+        "performances": []
+    }
+},
+{
+    "pk": 3, 
+    "model": "recollect.popularalbum", 
+    "fields": {
+        "tracks": []
+    }
+}
+]
