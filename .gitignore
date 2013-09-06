@@ -3,3 +3,5 @@
 /*/*db
 /settings_*.py
 /drcenv
+/venv
+*.pyc

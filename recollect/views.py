@@ -11,3 +11,7 @@ def home(request):
     context = RequestContext(request, {'albums': albums})
 
     return HttpResponse(template.render(context))
+
+def albums(request):
+
+    pass
