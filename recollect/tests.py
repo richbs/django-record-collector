@@ -1,5 +1,6 @@
 from django.test import TestCase
-from recollect.models import Album, ClassicalAlbum, PopularAlbum
+from recollect.models import Album, ClassicalAlbum, PopularAlbum, \
+                            Artist, Role, AlbumArtist
 
 
 class RecollectTest(TestCase):
@@ -17,9 +18,21 @@ class RecollectTest(TestCase):
         cl.save()
 
         pop = PopularAlbum()
-        pop.name = "Help!"
-        pop.year = 1965
+        pop.name = "The Shape of Jazz to Come"
+        pop.year = 1959
         pop.save()
+
+        ornette = Artist()
+        ornette.name = "Ornette Coleman"
+        ornette.surname = "Coleman"
+        ornette.given_name = "Ornette"
+        ornette.save()
+
+        ornette_plays = AlbumArtist()
+        ornette_plays.artist = ornette
+        ornette_plays.album = pop
+        ornette_plays.save()
+
 
     def test_home(self):
 
