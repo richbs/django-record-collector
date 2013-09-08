@@ -28,6 +28,18 @@ class RecollectTest(TestCase):
         ornette.given_name = "Ornette"
         ornette.save()
 
+        don = Artist()
+        don.name = "Don Cherry"
+        don.surname = "Cherry"
+        don.given_name = "Don"
+        don.save()
+
+
+        don_plays = AlbumArtist()
+        don_plays.artist = don
+        don_plays.album = pop
+        don_plays.save()
+
         ornette_plays = AlbumArtist()
         ornette_plays.artist = ornette
         ornette_plays.album = pop

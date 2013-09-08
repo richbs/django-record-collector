@@ -15,3 +15,7 @@ def home(request):
 def albums(request):
 
     pass
+
+def album(requst, album_slug):
+
+    pass

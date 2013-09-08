@@ -144,4 +144,8 @@ class PopularAlbum(Album):
 
 
 class AlbumArtist(Role):
+
+    def __unicode__(self):
+        return self.artist.name
+
     album = models.ForeignKey(PopularAlbum)
