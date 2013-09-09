@@ -21,6 +21,8 @@ class RecollectTest(TestCase):
         pop.name = "The Shape of Jazz to Come"
         pop.year = 1959
         pop.save()
+        pop.slug = pop.get_slug()
+        pop.save()
 
         ornette = Artist()
         ornette.name = "Ornette Coleman"
@@ -51,6 +53,12 @@ class RecollectTest(TestCase):
         response = self.client.get('/')
         self.assertContains(response, 'Harvest', 1, 200)
         self.assertContains(response, '<li', 3, 200)
+
+    def test_album(self):
+
+        response = self.client.get('/album/3-the-shape-of-jazz-to-come-1959')
+        self.assertContains(response, 'Shape of Jazz', 1, 200)
+        self.assertContains(response, 'Don Cherry', 1, 200)
 
 #     def test_albums(self):
 #

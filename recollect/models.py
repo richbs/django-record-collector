@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils.text import slugify
 
 
 class Venue(models.Model):
@@ -127,10 +128,16 @@ class Album(models.Model):
     release_date = models.DateField(null=True)
     year = models.IntegerField(blank=True, null=True)
     label = models.ForeignKey(Label, blank=True, null=True)
+    artists = models.ManyToManyField(Artist, through="AlbumArtist")
 
     def __unicode__(self):
         return u"%s (%d)" % (self.name, self.year)
 
+    def get_slug(self):
+
+        return slugify(u"%d %s %d" % (self.id,
+                                     self.name,
+                                     self.year))
 
 class ClassicalAlbum(Album):
 
@@ -140,7 +147,6 @@ class ClassicalAlbum(Album):
 class PopularAlbum(Album):
 
     tracks = models.ManyToManyField(Track)
-    artists = models.ManyToManyField(Artist, through="AlbumArtist")
 
 
 class AlbumArtist(Role):
@@ -148,4 +154,4 @@ class AlbumArtist(Role):
     def __unicode__(self):
         return self.artist.name
 
-    album = models.ForeignKey(PopularAlbum)
+    album = models.ForeignKey(Album)

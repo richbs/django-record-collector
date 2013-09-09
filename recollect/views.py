@@ -16,6 +16,9 @@ def albums(request):
 
     pass
 
-def album(requst, album_slug):
+def album(request, album_slug):
 
-    pass
+    album = Album.objects.get(slug=album_slug)
+    template = loader.get_template('album.html')
+    context = RequestContext(request, {'album': album})
+    return HttpResponse(template.render(context))
