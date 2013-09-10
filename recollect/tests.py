@@ -1,6 +1,6 @@
 from django.test import TestCase
 from recollect.models import Album, ClassicalAlbum, PopularAlbum, \
-                            Artist, Role, AlbumArtist
+                            Artist, AlbumArtist, Instrument
 
 
 class RecollectTest(TestCase):
@@ -42,11 +42,21 @@ class RecollectTest(TestCase):
         don_plays.album = pop
         don_plays.save()
 
+        sax = Instrument()
+        sax.name = "Alto Saxophone"
+        sax.save()
+
+        cornet = Instrument()
+        cornet.name = "Cornet"
+        cornet.save()
+
+
         ornette_plays = AlbumArtist()
         ornette_plays.artist = ornette
         ornette_plays.album = pop
         ornette_plays.save()
-
+        ornette_plays.instruments.add(sax)
+        don_plays.instruments.add(cornet)
 
     def test_home(self):
 
@@ -57,8 +67,10 @@ class RecollectTest(TestCase):
     def test_album(self):
 
         response = self.client.get('/album/3-the-shape-of-jazz-to-come-1959')
+        print response
         self.assertContains(response, 'Shape of Jazz', 1, 200)
-        self.assertContains(response, 'Don Cherry', 1, 200)
+        self.assertContains(response, 'Saxophone', 1, 200)
+        self.assertContains(response, 'Don Cherry (Cornet)', 1, 200)
 
 #     def test_albums(self):
 #
