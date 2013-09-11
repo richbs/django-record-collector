@@ -4,3 +4,8 @@
 <li>{{ artist }} ({{ artist.instruments.all.0.name }})</li>
 {% endfor %}
 </ul>
+<ol>
+{% for track in album.popularalbum.tracks.all %}
+<li>{{ track }}</li>
+{% endfor %}
+</ol>

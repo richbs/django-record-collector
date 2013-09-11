@@ -60,7 +60,7 @@ class Work(models.Model):
 class Track(Work):
 
     number = models.IntegerField(blank=True, null=False, db_index=True)
-    artist = models.ManyToManyField(Artist, through="Playing")
+    artists = models.ManyToManyField(Artist, through="Playing")
 
 
 class Instrument(models.Model):
@@ -98,13 +98,12 @@ class Performance(models.Model):
 
 class Role(models.Model):
 
-    class Meta:
-        abstract = True
-
     artist = models.ForeignKey(Artist)
     instruments = models.ManyToManyField(Instrument)
     composer = models.BooleanField(default=False)
 
+    def __unicode__(self):
+        return self.artist.name
 
 class Playing(Role):
     track = models.ForeignKey(Track)
@@ -150,8 +149,5 @@ class PopularAlbum(Album):
 
 
 class AlbumArtist(Role):
-
-    def __unicode__(self):
-        return self.artist.name
 
     album = models.ForeignKey(Album)
