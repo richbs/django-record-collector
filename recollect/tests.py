@@ -63,7 +63,14 @@ class RecollectTest(TestCase):
         track1.title = "Lonely Woman"
         track1.save()
 
+
+        track2 = Track()
+        track2.number = 2
+        track2.title = "Eventually"
+        track2.save()
+
         pop.tracks.add(track1)
+        pop.tracks.add(track2)
 
     def test_home(self):
 
@@ -77,7 +84,7 @@ class RecollectTest(TestCase):
         self.assertContains(response, 'Shape of Jazz', 1, 200)
         self.assertContains(response, 'Saxophone', 1, 200)
         self.assertContains(response, 'Don Cherry (Cornet)', 1, 200)
-
+        self.assertContains(response, 'Eventually', 1, 200)
         self.assertContains(response, 'Lonely Woman', 1, 200)
 
 #     def test_albums(self):
