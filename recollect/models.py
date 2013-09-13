@@ -46,7 +46,7 @@ class Work(models.Model):
     title = models.CharField(blank=False, max_length=255)
     slug = models.SlugField(max_length=255, db_index=True)
     opus_number = models.CharField(blank=True, max_length=10)
-    composers = models.ManyToManyField(Artist, through="Performing")
+    composers = models.ManyToManyField(Artist)
     year_composed = models.IntegerField(blank=True, null=True)
 
     class Admin:
@@ -55,12 +55,6 @@ class Work(models.Model):
 
     def __unicode__(self):
         return u"%s" % (self.title)
-
-
-class Track(Work):
-
-    number = models.IntegerField(blank=True, null=False, db_index=True)
-    artists = models.ManyToManyField(Artist, through="Playing")
 
 
 class Instrument(models.Model):
@@ -82,11 +76,12 @@ class Performance(models.Model):
     A performance of a work given at a particular date and time
     Could be a recording date
     """
+    number = models.IntegerField(null=True, db_index=True)
     year = models.IntegerField(blank=True)
-    date = models.DateField()
-    venue = models.ForeignKey(Venue)
+    date = models.DateField(null=True)
+    venue = models.ForeignKey(Venue, null=True)
     work = models.ForeignKey(Work)
-    performers = models.ManyToManyField(Artist, through="Performing")
+    performers = models.ManyToManyField("Role")
 
     class Admin:
         list_display = ('',)
@@ -100,20 +95,9 @@ class Role(models.Model):
 
     artist = models.ForeignKey(Artist)
     instruments = models.ManyToManyField(Instrument)
-    composer = models.BooleanField(default=False)
 
     def __unicode__(self):
         return self.artist.name
-
-class Playing(Role):
-    track = models.ForeignKey(Track)
-
-
-class Performing(Role):
-
-    work = models.ForeignKey(Work)
-    performance = models.ForeignKey(Performance, null=True)
-
 
 class Label(models.Model):
     name = models.CharField(max_length=255)
@@ -127,7 +111,7 @@ class Album(models.Model):
     release_date = models.DateField(null=True)
     year = models.IntegerField(blank=True, null=True)
     label = models.ForeignKey(Label, blank=True, null=True)
-    artists = models.ManyToManyField(Artist, through="AlbumArtist")
+    artists = models.ManyToManyField(Role)
 
     def __unicode__(self):
         return u"%s (%d)" % (self.name, self.year)
@@ -138,6 +122,7 @@ class Album(models.Model):
                                      self.name,
                                      self.year))
 
+
 class ClassicalAlbum(Album):
 
     performances = models.ManyToManyField(Performance)
@@ -145,9 +130,6 @@ class ClassicalAlbum(Album):
 
 class PopularAlbum(Album):
 
-    tracks = models.ManyToManyField(Track)
+    tracks = models.ManyToManyField(Performance)
 
 
-class AlbumArtist(Role):
-
-    album = models.ForeignKey(Album)

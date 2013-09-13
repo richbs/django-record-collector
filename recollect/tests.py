@@ -1,6 +1,7 @@
 from django.test import TestCase
 from recollect.models import Album, ClassicalAlbum, PopularAlbum, \
-                            Artist, AlbumArtist, Instrument, Track
+                            Artist, Instrument, Role, \
+                            Performance, Work
 
 
 class RecollectTest(TestCase):
@@ -37,10 +38,10 @@ class RecollectTest(TestCase):
         don.save()
 
 
-        don_plays = AlbumArtist()
+        don_plays = Role()
         don_plays.artist = don
-        don_plays.album = pop
         don_plays.save()
+        don_plays.album_set.add(pop)
 
         sax = Instrument()
         sax.name = "Alto Saxophone"
@@ -51,26 +52,29 @@ class RecollectTest(TestCase):
         cornet.save()
 
 
-        ornette_plays = AlbumArtist()
+        ornette_plays = Role()
         ornette_plays.artist = ornette
-        ornette_plays.album = pop
         ornette_plays.save()
+
+        ornette_plays.album_set.add(pop)
+
         ornette_plays.instruments.add(sax)
         don_plays.instruments.add(cornet)
 
-        track1 = Track()
-        track1.number = 1
-        track1.title = "Lonely Woman"
-        track1.save()
+        count = 0
+        for t in ["Lonely Woman", "Eventually"]:
+            count += 1
+            w = Work(title=t)
+            w.save()
+            p = Performance(
+                        work=w,
+                        number=count,
+                        year=pop.year,
+                        # performers=(ornette_plays, don_plays)
+                        )
+            p.save()
 
-
-        track2 = Track()
-        track2.number = 2
-        track2.title = "Eventually"
-        track2.save()
-
-        pop.tracks.add(track1)
-        pop.tracks.add(track2)
+            pop.tracks.add(p)
 
     def test_home(self):
 

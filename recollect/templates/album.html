@@ -1,6 +1,6 @@
 <h2>{{ album.name }}</h2>
 <ul>
-{% for artist in album.albumartist_set.all %}
+{% for artist in album.artists.all %}
 <li>{{ artist }} ({{ artist.instruments.all.0.name }})</li>
 {% endfor %}
 </ul>
