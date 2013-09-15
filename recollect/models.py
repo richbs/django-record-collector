@@ -58,7 +58,9 @@ class Work(models.Model):
 
 
 class Instrument(models.Model):
-    """(Instrument description)"""
+    """
+    A musical device played by an artist
+    """
 
     name = models.CharField(blank=True, max_length=255)
     slug = models.SlugField(max_length=255, db_index=True)
@@ -68,7 +70,7 @@ class Instrument(models.Model):
         search_fields = ('',)
 
     def __unicode__(self):
-        return u"%s" (self.name)
+        return self.name
 
 
 class Performance(models.Model):
@@ -88,24 +90,34 @@ class Performance(models.Model):
         search_fields = ('',)
 
     def __unicode__(self):
-        return u"%s %d" % (self.work, self.year)
+        roles = [unicode(r) for r in self.performers.all()]
+        artists = ", ".join(roles)
+        return u"%s (%d) (%s)" % (self.work, self.year, artists)
 
 
 class Role(models.Model):
-
+    """
+    Links performances to artists
+    """
     artist = models.ForeignKey(Artist)
     instruments = models.ManyToManyField(Instrument)
 
     def __unicode__(self):
+
         return self.artist.name
 
 class Label(models.Model):
+    """
+    The record label publishing this record
+    """
     name = models.CharField(max_length=255)
     slug = models.SlugField(max_length=255, db_index=True)
 
 
 class Album(models.Model):
-
+    """
+    A record
+    """
     name = models.CharField(max_length=255)
     slug = models.SlugField(max_length=255, db_index=True)
     release_date = models.DateField(null=True)
@@ -114,7 +126,9 @@ class Album(models.Model):
     artists = models.ManyToManyField(Role)
 
     def __unicode__(self):
-        return u"%s (%d)" % (self.name, self.year)
+        roles = [unicode(r) for r in self.artists.all()]
+        artists = ", ".join(roles)
+        return u"%s (%d) by %s" % (self.name, self.year, artists)
 
     def get_slug(self):
 
@@ -124,12 +138,16 @@ class Album(models.Model):
 
 
 class ClassicalAlbum(Album):
-
+    """
+    Wraps the album for classical performances
+    """
     performances = models.ManyToManyField(Performance)
 
 
 class PopularAlbum(Album):
-
+    """
+    Wraps the album to link performances as tracks
+    """
     tracks = models.ManyToManyField(Performance)
 
 

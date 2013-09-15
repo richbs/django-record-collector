@@ -41,7 +41,7 @@ class RecollectTest(TestCase):
         don_plays = Role()
         don_plays.artist = don
         don_plays.save()
-        don_plays.album_set.add(pop)
+
 
         sax = Instrument()
         sax.name = "Alto Saxophone"
@@ -56,7 +56,7 @@ class RecollectTest(TestCase):
         ornette_plays.artist = ornette
         ornette_plays.save()
 
-        ornette_plays.album_set.add(pop)
+        pop.artists.add(ornette_plays)
 
         ornette_plays.instruments.add(sax)
         don_plays.instruments.add(cornet)
@@ -66,15 +66,11 @@ class RecollectTest(TestCase):
             count += 1
             w = Work(title=t)
             w.save()
-            p = Performance(
-                        work=w,
-                        number=count,
-                        year=pop.year,
-                        # performers=(ornette_plays, don_plays)
-                        )
+            p = Performance(work=w, number=count, year=pop.year)
             p.save()
-
             pop.tracks.add(p)
+            p.performers.add(ornette_plays)
+            p.performers.add(don_plays)
 
     def test_home(self):
 
@@ -86,8 +82,8 @@ class RecollectTest(TestCase):
 
         response = self.client.get('/album/3-the-shape-of-jazz-to-come-1959')
         self.assertContains(response, 'Shape of Jazz', 1, 200)
-        self.assertContains(response, 'Saxophone', 1, 200)
-        self.assertContains(response, 'Don Cherry (Cornet)', 1, 200)
+        self.assertContains(response, 'Saxophone', 3, 200)
+        self.assertContains(response, 'Don Cherry (Cornet)', 2, 200)
         self.assertContains(response, 'Eventually', 1, 200)
         self.assertContains(response, 'Lonely Woman', 1, 200)
 
