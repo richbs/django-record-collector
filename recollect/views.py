@@ -9,12 +9,16 @@ def home(request):
     albums = Album.objects.all()
     template = loader.get_template('index.html')
     context = RequestContext(request, {'albums': albums})
-
     return HttpResponse(template.render(context))
+
 
 def albums(request):
 
-    pass
+    albums = Album.objects.all()
+    template = loader.get_template('album_list.html')
+    context = RequestContext(request, {'albums': albums})
+    return HttpResponse(template.render(context))
+
 
 def album(request, album_slug):
 

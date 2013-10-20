@@ -1,0 +1,10 @@
+<h2>Albums</h2>
+<ul>
+	{% for a in albums %}
+			<li>
+				<a href="{% url 'album' album_slug=a.get_slug %}">
+					{{a}}
+				</a>
+			</li>
+	{% endfor %}
+</ul>

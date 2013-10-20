@@ -106,6 +106,7 @@ class Role(models.Model):
 
         return self.artist.name
 
+
 class Label(models.Model):
     """
     The record label publishing this record
@@ -132,9 +133,7 @@ class Album(models.Model):
 
     def get_slug(self):
 
-        return slugify(u"%d %s %d" % (self.id,
-                                     self.name,
-                                     self.year))
+        return slugify(u"%d %s %d" % (self.id, self.name, self.year))
 
 
 class ClassicalAlbum(Album):
@@ -149,5 +148,3 @@ class PopularAlbum(Album):
     Wraps the album to link performances as tracks
     """
     tracks = models.ManyToManyField(Performance)
-
-

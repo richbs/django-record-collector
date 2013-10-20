@@ -1,7 +1,6 @@
 from django.test import TestCase
 from recollect.models import Album, ClassicalAlbum, PopularAlbum, \
-                            Artist, Instrument, Role, \
-                            Performance, Work
+    Artist, Instrument, Role, Performance, Work
 
 
 class RecollectTest(TestCase):
@@ -37,11 +36,9 @@ class RecollectTest(TestCase):
         don.given_name = "Don"
         don.save()
 
-
         don_plays = Role()
         don_plays.artist = don
         don_plays.save()
-
 
         sax = Instrument()
         sax.name = "Alto Saxophone"
@@ -50,7 +47,6 @@ class RecollectTest(TestCase):
         cornet = Instrument()
         cornet.name = "Cornet"
         cornet.save()
-
 
         ornette_plays = Role()
         ornette_plays.artist = ornette
@@ -87,7 +83,7 @@ class RecollectTest(TestCase):
         self.assertContains(response, 'Eventually', 1, 200)
         self.assertContains(response, 'Lonely Woman', 1, 200)
 
-#     def test_albums(self):
-#
-#         response = self.client.get('/albums')
-#         self.assertContains(response, "Harvest", 1, 200)
+    def test_albums(self):
+
+        response = self.client.get('/albums')
+        self.assertContains(response, "Harvest", 1, 200)
