@@ -43,6 +43,7 @@ class Work(models.Model):
     Either a classical opus or a show tune or a standard
     or a track on an album
     """
+
     title = models.CharField(blank=False, max_length=255)
     slug = models.SlugField(max_length=255, db_index=True)
     opus_number = models.CharField(blank=True, max_length=10)
@@ -113,6 +114,9 @@ class Label(models.Model):
     """
     name = models.CharField(max_length=255)
     slug = models.SlugField(max_length=255, db_index=True)
+
+    def __unicode__(self):
+        return u"%s" % (self.name)
 
 
 class Album(models.Model):
