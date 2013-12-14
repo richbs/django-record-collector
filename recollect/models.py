@@ -84,7 +84,7 @@ class Performance(models.Model):
     date = models.DateField(null=True)
     venue = models.ForeignKey(Venue, null=True)
     work = models.ForeignKey(Work)
-    performers = models.ManyToManyField("Role")
+    performers = models.ManyToManyField(Artist, through="Role")
 
     class Admin:
         list_display = ('',)
@@ -101,6 +101,8 @@ class Role(models.Model):
     Links performances to artists
     """
     artist = models.ForeignKey(Artist)
+    album = models.ForeignKey('Album', null=True)
+    performance = models.ForeignKey(Performance, null=True)
     instruments = models.ManyToManyField(Instrument)
 
     def __unicode__(self):
@@ -128,7 +130,7 @@ class Album(models.Model):
     release_date = models.DateField(null=True)
     year = models.IntegerField(blank=True, null=True)
     label = models.ForeignKey(Label, blank=True, null=True)
-    artists = models.ManyToManyField(Role)
+    artists = models.ManyToManyField(Artist, through=Role)
 
     def __unicode__(self):
         roles = [unicode(r) for r in self.artists.all()]

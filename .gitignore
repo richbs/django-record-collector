@@ -5,3 +5,6 @@
 /drcenv
 /venv
 *.pyc
+bachr
+htmlcov
+.coverage

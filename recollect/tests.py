@@ -36,6 +36,19 @@ class RecollectTest(TestCase):
         don.given_name = "Don"
         don.save()
 
+        neil = Artist()
+        neil.name = "Neil Young"
+        neil.surname = "Young"
+        neil.given_name = "Neil"
+        neil.save()
+
+        neil_plays = Role()
+        neil_plays.artist = neil
+        neil_plays.album = album
+        neil_plays.save()
+
+        album.artists.all()
+
         don_plays = Role()
         don_plays.artist = don
         don_plays.save()
@@ -48,14 +61,18 @@ class RecollectTest(TestCase):
         cornet.name = "Cornet"
         cornet.save()
 
+        conducting = Instrument()
+        conducting.name = "Conductor"
+        conducting.save()
+
         ornette_plays = Role()
         ornette_plays.artist = ornette
+        ornette_plays.album = pop
         ornette_plays.save()
-
-        pop.artists.add(ornette_plays)
 
         ornette_plays.instruments.add(sax)
         don_plays.instruments.add(cornet)
+        don_plays.save()
 
         count = 0
         for t in ["Lonely Woman", "Eventually"]:
@@ -65,8 +82,13 @@ class RecollectTest(TestCase):
             p = Performance(work=w, number=count, year=pop.year)
             p.save()
             pop.tracks.add(p)
-            p.performers.add(ornette_plays)
-            p.performers.add(don_plays)
+
+            r1 = Role(performance=p, artist=don)
+            r1.save()
+            r1.instruments.add(cornet)
+            r2 = Role(performance=p, artist=ornette)
+            r2.save()
+            r2.instruments.add(sax)
 
     def test_home(self):
 
