@@ -14,15 +14,20 @@ class RecollectTest(TestCase):
 
         cl = ClassicalAlbum()
         cl.name = "Mahler: Symphony No. 2 \"Resurrection\""
-        cl.year = 1976
+        cl.year = 1968
         cl.save()
 
         pop = PopularAlbum()
         pop.name = "The Shape of Jazz to Come"
         pop.year = 1959
         pop.save()
-        pop.slug = pop.get_slug()
-        pop.save()
+
+        haitink = Artist()
+        haitink.name = "Bernard Haitink"
+        haitink.surname = "Haitink"
+        haitink.given_name = "Bernard"
+        haitink.save()
+        haitink.album_set.add(cl)
 
         ornette = Artist()
         ornette.name = "Ornette Coleman"
@@ -36,22 +41,15 @@ class RecollectTest(TestCase):
         don.given_name = "Don"
         don.save()
 
+        pop.artists.add(ornette)
+
         neil = Artist()
         neil.name = "Neil Young"
         neil.surname = "Young"
         neil.given_name = "Neil"
         neil.save()
 
-        neil_plays = Role()
-        neil_plays.artist = neil
-        neil_plays.album = album
-        neil_plays.save()
-
-        album.artists.all()
-
-        don_plays = Role()
-        don_plays.artist = don
-        don_plays.save()
+        neil.album_set.add(album)
 
         sax = Instrument()
         sax.name = "Alto Saxophone"
@@ -64,15 +62,6 @@ class RecollectTest(TestCase):
         conducting = Instrument()
         conducting.name = "Conductor"
         conducting.save()
-
-        ornette_plays = Role()
-        ornette_plays.artist = ornette
-        ornette_plays.album = pop
-        ornette_plays.save()
-
-        ornette_plays.instruments.add(sax)
-        don_plays.instruments.add(cornet)
-        don_plays.save()
 
         count = 0
         for t in ["Lonely Woman", "Eventually"]:
@@ -100,7 +89,7 @@ class RecollectTest(TestCase):
 
         response = self.client.get('/album/3-the-shape-of-jazz-to-come-1959')
         self.assertContains(response, 'Shape of Jazz', 1, 200)
-        self.assertContains(response, 'Saxophone', 3, 200)
+        self.assertContains(response, 'Saxophone', 2, 200)
         self.assertContains(response, 'Don Cherry (Cornet)', 2, 200)
         self.assertContains(response, 'Eventually', 1, 200)
         self.assertContains(response, 'Lonely Woman', 1, 200)

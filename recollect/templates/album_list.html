@@ -2,7 +2,7 @@
 <ul>
 	{% for a in albums %}
 			<li>
-				<a href="{% url 'album' album_slug=a.get_slug %}">
+				<a href="{% url 'album' album_slug=a.slug %}">
 					{{a}}
 				</a>
 			</li>

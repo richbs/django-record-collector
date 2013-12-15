@@ -1,15 +1,15 @@
 <h2>{{ album }}</h2>
 <ul>
-{% for artist in album.role_set.all %}
-<li>{{ artist }} ({{ artist.instruments.all.0.name }})</li>
+{% for artist in album.artists.all %}
+<li>{{ artist }}</li>
 {% endfor %}
 </ul>
 <ol>
 {% for track in album.popularalbum.tracks.all %}
 <li>{{ track }} 
 <ul>
-{% for performer in track.role_set.all %}
-<li>{{performer}} ({{performer.instruments.all.0}})</li>
+{% for role in track.role_set.all %}
+<li>{{ role.artist }} ({{ role.instruments.all.0 }})</li>
 {% endfor %}
 </ul>
 </li>
